@@ -1,0 +1,30 @@
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+class Main$ButtonListener implements ActionListener {
+   private Main$ButtonListener() {
+   }
+
+   public void actionPerformed(ActionEvent e) {
+      if (e.getSource() == Main.b) {
+         Main.b.setEnabled(false);
+         Main.done = false;
+         Main.b.setBackground(Color.RED);
+         Main.b.setFont(Main.b.getFont().deriveFont(20.0F));
+         Main.b.setText("");
+
+         try {
+            Main.startLongProcess();
+         } catch (Exception var3) {
+            var3.printStackTrace();
+         }
+      }
+
+      if (e.getSource() == Main.b2) {
+         Main.done = true;
+         Main.b.setEnabled(true);
+      }
+
+   }
+}

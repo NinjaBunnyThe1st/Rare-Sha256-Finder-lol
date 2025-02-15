@@ -1,0 +1,124 @@
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.SwingWorker;
+
+class Main$1 extends SwingWorker<Void, Void> {
+   Main$1() {
+   }
+
+   protected Void doInBackground() throws Exception {
+      int[] secs = new int[6];
+      int[] tims = new int[]{1, 1, 1, 1, 1, 1};
+      long ss = System.currentTimeMillis();
+      Font s4f = Main.las[0].getFont().deriveFont(4.0F);
+      Main.las[0].setFont(s4f);
+
+      while(!Main.done) {
+         long sss = System.currentTimeMillis();
+         int s = (int)(sss - ss) / 10;
+         int sec = s / 100;
+         String im = "";
+         double amount = Math.floor(Math.random() * 64.0);
+         if (amount == 0.0) {
+            im = "lol";
+         }
+
+         for(double b = 0.0; b < amount; ++b) {
+            int in = (int)Math.floor(Math.random() * 128.0);
+            String th = Character.toString(Main.as[in]);
+            im = im + th;
+         }
+
+         String input = String.valueOf(im);
+         String res = Main.doubleSHA256(input);
+         StringBuilder binaryBuilder = new StringBuilder();
+         char[] var19;
+         int var18 = (var19 = input.toCharArray()).length;
+
+         for(int var17 = 0; var17 < var18; ++var17) {
+            char c = var19[var17];
+            binaryBuilder.append(Integer.toBinaryString(c));
+         }
+
+         StringBuilder hexBuilder = new StringBuilder();
+         byte[] var20;
+         int rar = (var20 = Main.hash1).length;
+
+         for(var18 = 0; var18 < rar; ++var18) {
+            byte b = var20[var18];
+            hexBuilder.append(String.format("%02X", b));
+         }
+
+         String hash = hexBuilder.toString().toLowerCase();
+         String inp = binaryBuilder.toString();
+         Main.las[0].setText("Latest Input: " + inp);
+         rar = Main.getRarity(res);
+         JLabel var10000;
+         String var10001;
+         int var10002;
+         switch (rar) {
+            case 2:
+               var10000 = Main.las[1];
+               var10001 = Main.lr[2];
+               var10000.setText("Latest 16: " + var10001 + " Time: " + (s - secs[0]) + "mms");
+               secs[0] = s;
+               break;
+            case 3:
+               var10000 = Main.las[2];
+               var10001 = Main.lr[3];
+               var10000.setText("Latest 256: " + var10001 + " Time: " + (s / 10 - secs[1]) + "ms Amount " + tims[1]);
+               secs[1] = s / 10;
+               var10002 = tims[1]++;
+               break;
+            case 4:
+               var10000 = Main.las[3];
+               var10001 = Main.lr[4];
+               var10000.setText("Latest 4096: " + var10001 + " Time: " + (sec - secs[2]) + "s Amount " + tims[2]);
+               secs[2] = sec;
+               var10002 = tims[2]++;
+               Main.las[4].setText("Lastest 4096 Input: " + hash);
+               break;
+            case 5:
+               var10000 = Main.las[5];
+               var10001 = Main.lr[5];
+               var10000.setText("Latest 65536: " + var10001 + " Time: " + (sec - secs[3]) + "s Amount " + tims[3]);
+               secs[3] = sec;
+               var10002 = tims[3]++;
+               Main.las[6].setText("Lastest 65536 Input: " + hash);
+               this.pr("1/65536 Sha256: " + hash);
+               break;
+            case 6:
+               var10000 = Main.las[7];
+               var10001 = Main.lr[6];
+               var10000.setText("Latest 1048576: " + var10001 + " Time: " + (sec - secs[4]) + "s Amount " + tims[4]);
+               secs[4] = sec;
+               var10002 = tims[4]++;
+               Main.las[8].setText("Lastest 1048576 Input: " + hash);
+               this.pr("1/1048576 Sha256: " + hash);
+               break;
+            case 7:
+               var10000 = Main.las[9];
+               var10001 = Main.lr[7];
+               var10000.setText("Latest 16777216: " + var10001 + " Time: " + (sec - secs[5]) + "s Amount " + tims[5]);
+               secs[5] = sec;
+               var10002 = tims[5]++;
+               Main.las[10].setText("Lastest 16777216 Input: " + hash);
+               this.pr("1/16777216 Sha256: " + hash);
+         }
+
+         if (rar >= 8) {
+            this.pr("Jackpot, 1/??? Sha256: " + hash);
+         }
+      }
+
+      return null;
+   }
+
+   private void pr(String inp) {
+      System.out.println(inp);
+   }
+
+   protected void done() {
+      Main.b.setEnabled(true);
+   }
+}

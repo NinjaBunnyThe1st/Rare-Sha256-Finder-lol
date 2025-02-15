@@ -1,0 +1,141 @@
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.LayoutManager;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
+public class Main extends JFrame {
+   static JButton b;
+   static JButton b2;
+   static JLabel[] las = new JLabel[12];
+   static JFrame frame;
+   static char[] as;
+   static String[] lr = new String[8];
+   static boolean done = false;
+   static byte[] hash1;
+   private static SwingWorker<Void, Void> worker;
+
+   public Main() {
+   }
+
+   public static String doubleSHA256(String input) throws Exception {
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+      hash1 = md.digest(input.getBytes(StandardCharsets.UTF_8));
+      byte[] hash2 = md.digest(hash1);
+      return bytesToHex(hash2);
+   }
+
+   private static String bytesToHex(byte[] bytes) {
+      StringBuilder sb = new StringBuilder();
+      byte[] var5 = bytes;
+      int var4 = bytes.length;
+
+      for(int var3 = 0; var3 < var4; ++var3) {
+         byte b = var5[var3];
+         sb.append(String.format("%02x", b));
+      }
+
+      return sb.toString();
+   }
+
+   public static void anb(Container[][] ob) {
+      for(int b = 0; b < ob[0].length; ++b) {
+         frame.add(ob[0][b]);
+      }
+
+   }
+
+   public static void setLas(JLabel[] lass) {
+      int dis = 550;
+
+      for(int b = 0; b < lass.length; ++b) {
+         lass[b] = new JLabel();
+         lass[b].setFont(new Font("Monospaced", 0, 15));
+         lass[b].setText("");
+         lass[b].setBounds(0, dis, 1200, 150);
+         lass[b].setVisible(true);
+         dis += 20;
+         lass[b].setOpaque(false);
+      }
+
+   }
+
+   public static void createAndShowGUI() {
+      Main$ButtonListener listener = new Main$ButtonListener();
+      frame = new JFrame("Rare Sha256() finder (Sigma)");
+      ImageIcon con = new ImageIcon(".//res//icon.png");
+      frame.setIconImage(con.getImage());
+      frame.setDefaultCloseOperation(3);
+      setLas(las);
+      las[0].setText("Click the blue button to start...");
+      las[1].setText("Latest 16:");
+      las[2].setText("Latest 256:");
+      las[3].setText("Latest 4096:");
+      las[4].setText("Lastest 4096 Input:");
+      las[5].setText("Latest 65536:");
+      las[6].setText("Lastest 65536 Input:");
+      las[7].setText("Latest 1048576:");
+      las[8].setText("Lastest 1048576 Input:");
+      las[9].setText("Latest 16777216:");
+      las[10].setText("Latest 16777216 Input:");
+      las[11].setText("The terminal will print rare sha256() while running (if you get some ofc)");
+      b = new JButton();
+      b.setBounds(150, 50, 400, 400);
+      b.addActionListener(listener);
+      b.setBackground(Color.GREEN);
+      b.setText("Start");
+      b2 = new JButton();
+      b2.setBounds(700, 50, 400, 400);
+      b2.addActionListener(listener);
+      b2.setBackground(Color.BLUE);
+      b2.setText("Stop");
+      frame.setDefaultCloseOperation(3);
+      frame.setLayout((LayoutManager)null);
+      frame.setSize(1200, 1000);
+      frame.setVisible(true);
+      frame.setResizable(false);
+      Container[][] obs = new Container[][]{las};
+      anb(obs);
+      frame.add(b);
+      frame.add(b2);
+   }
+
+   public static void main(String[] args) throws Exception {
+      as = new char[128];
+
+      for(int i = 0; i < 128; ++i) {
+         as[i] = (char)i;
+      }
+
+      SwingUtilities.invokeLater(Main::createAndShowGUI);
+   }
+
+   public static void startLongProcess() {
+      worker = new Main$1();
+      worker.execute();
+   }
+
+   public static int getRarity(String r) {
+      int rarity = 0;
+      String lz = "0";
+
+      for(int b = 1; b < r.length(); ++b) {
+         if (!r.substring(0, b).equals(lz)) {
+            lr[b] = r.substring(0, b + 1);
+            break;
+         }
+
+         ++rarity;
+         lz = lz + "0";
+      }
+
+      return rarity;
+   }
+}
