@@ -1,15 +1,18 @@
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.* ;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -22,6 +25,8 @@ public class Main extends JFrame {
   static String[] lr = new String[8];
   static boolean done = false;
   static byte[] hash1;
+  static ArrayList < String > par = new ArrayList < String > ();
+  static String nH;
   public static String doubleSHA256(String input) throws Exception {
     MessageDigest md = MessageDigest.getInstance("SHA-256");
     hash1 = md.digest(input.getBytes(StandardCharsets.UTF_8));
@@ -101,6 +106,33 @@ public class Main extends JFrame {
     for (int i = 0; i < 128; i++) {
       as[i] = (char) i;
     }
+    int blockH = 1;@SuppressWarnings("deprecation")
+    URL urll = new URL("https://learnmeabitcoin.com/explorer/_blockchain.php");
+    BufferedReader readerr = new BufferedReader(new InputStreamReader(urll.openStream()));
+    String linee;
+    while ((linee = readerr.readLine()) != null) {
+      if (linee.contains("0 and")) {
+        String[] partss = linee.split("0 and ");
+        if (partss.length > 1) {
+          blockH = Integer.parseInt(partss[1].split("\\.")[0]);
+        }
+      }
+    }@SuppressWarnings("deprecation")
+    URL url = new URL("https://www.blockchain.com/explorer/blocks/btc/" + blockH);
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("GET");
+    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+    String line;
+
+    while ((line = reader.readLine()) != null) {
+      if (!line.isEmpty()) {
+        String[] parts = line.split("hash\":\"0");
+        if (parts.length > 1) {
+          nH = parts[1].split("\",")[0];
+        }
+      }
+    }
+
     SwingUtilities.invokeLater(Main::createAndShowGUI);
   }
   private static SwingWorker < Void,
@@ -126,18 +158,9 @@ public class Main extends JFrame {
           long sss = System.currentTimeMillis();
           int s = ((int)(sss - ss) / 10);
           int sec = s / 100;
-          String im = "";
-          double amount = Math.floor(Math.random() * 64);
-          if (amount == 0) {
-            im = "lol";
-          }
-          for (double b = 0; b < amount; b++) {
-            int in =(int)(double) Math.floor(Math.random() * 128);
-            String th = Character.toString(as[ in ]);
-            im = im + th;
-          }
-          String input = String.valueOf(im);
-          String res = doubleSHA256(input);
+          double amount = Math.floor(Math.random() * 1.7e+308);
+          String input = String.valueOf(amount);
+          String res = doubleSHA256(nH + ":" + input);
           StringBuilder binaryBuilder = new StringBuilder();
           for (char c: input.toCharArray()) {
             binaryBuilder.append(Integer.toBinaryString(c));
@@ -190,7 +213,9 @@ public class Main extends JFrame {
           default:
             break;
           }
-        if(rar>=8){pr("Jackpot, 1/??? Sha256: " + hash);}
+          if (rar >= 8) {
+            pr("Jackpot, 1/??? Sha256: " + hash);
+          }
         }
         return null;
 
@@ -243,4 +268,5 @@ public class Main extends JFrame {
     }
 
   }
+
 }
