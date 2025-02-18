@@ -1,5 +1,4 @@
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +24,6 @@ public class Main extends JFrame {
   static String[] lr = new String[8];
   static boolean done = false;
   static byte[] hash1;
-  static ArrayList < String > par = new ArrayList < String > ();
   static String nH;
   public static String doubleSHA256(String input) throws Exception {
     MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -36,27 +34,27 @@ public class Main extends JFrame {
 
   private static String bytesToHex(byte[] bytes) {
     StringBuilder sb = new StringBuilder();
-    for (byte b: bytes) {
-      sb.append(String.format("%02x", b));
+    for (byte value: bytes) {
+      sb.append(String.format("%02x", value));
     }
     return sb.toString();
   }
   public static void anb(Container[][] ob) {
-    for (int b = 0; b < ob[0].length; b++) {
-      frame.add(ob[0][b]);
-    }
+      for (Container item : ob[0]) {
+          frame.add(item);
+      }
   }
 
   public static void setLas(JLabel[] lass) {
     int dis = 550;
-    for (int b = 0; b < lass.length; b++) {
-      lass[b] = new JLabel();
-      lass[b].setFont(new Font("Monospaced", Font.PLAIN, 15));
-      lass[b].setText("");
-      lass[b].setBounds(0, dis, 1200, 150);
-      lass[b].setVisible(true);
+    for (int bi = 0; bi < lass.length; bi++) {
+      lass[bi] = new JLabel();
+      lass[bi].setFont(new Font("Monospaced", Font.PLAIN, 15));
+      lass[bi].setText("");
+      lass[bi].setBounds(0, dis, 1200, 150);
+      lass[bi].setVisible(true);
       dis += 20;
-      lass[b].setOpaque(false);
+      lass[bi].setOpaque(false);
     }
   }
 
@@ -102,6 +100,7 @@ public class Main extends JFrame {
     frame.add(b2);
   }
   public static void main(String[] args) throws Exception {
+    new ButtonListener();
     as = new char[128];
     for (int i = 0; i < 128; i++) {
       as[i] = (char) i;
@@ -174,44 +173,44 @@ public class Main extends JFrame {
           las[0].setText("Latest Input: " + inp);
           int rar = getRarity(res);
           switch (rar) {
-          case 2:
-            las[1].setText("Latest 16: " + lr[2] + " Time: " + (s - secs[0]) + "mms");
-            secs[0] = s;
-            break;
-          case 3:
-            las[2].setText("Latest 256: " + lr[3] + " Time: " + ((s / 10) - secs[1]) + "ms" + " Amount " + tims[1]);
-            secs[1] = s / 10;
-            tims[1]++;
-            break;
-          case 4:
-            las[3].setText("Latest 4096: " + lr[4] + " Time: " + (sec - secs[2]) + "s" + " Amount " + tims[2]);
-            secs[2] = sec;
-            tims[2]++;
-            las[4].setText("Lastest 4096 Input: " + hash);
-            break;
-          case 5:
-            las[5].setText("Latest 65536: " + lr[5] + " Time: " + (sec - secs[3]) + "s" + " Amount " + tims[3]);
-            secs[3] = sec;
-            tims[3]++;
-            las[6].setText("Lastest 65536 Input: " + hash);
-            pr("1/65536 Sha256: " + hash);
-            break;
-          case 6:
-            las[7].setText("Latest 1048576: " + lr[6] + " Time: " + (sec - secs[4]) + "s" + " Amount " + tims[4]);
-            secs[4] = sec;
-            tims[4]++;
-            las[8].setText("Lastest 1048576 Input: " + hash);
-            pr("1/1048576 Sha256: " + hash);
-            break;
-          case 7:
-            las[9].setText("Latest 16777216: " + lr[7] + " Time: " + (sec - secs[5]) + "s" + " Amount " + tims[5]);
-            secs[5] = sec;
-            tims[5]++;
-            las[10].setText("Lastest 16777216 Input: " + hash);
-            pr("1/16777216 Sha256: " + hash);
-            break;
-          default:
-            break;
+          case 2 -> {
+              las[1].setText("Latest 16: " + lr[2] + " Time: " + (s - secs[0]) + "mms");
+              secs[0] = s;
+                }
+          case 3 -> {
+              las[2].setText("Latest 256: " + lr[3] + " Time: " + ((s / 10) - secs[1]) + "ms" + " Amount " + tims[1]);
+              secs[1] = s / 10;
+              tims[1]++;
+                }
+          case 4 -> {
+              las[3].setText("Latest 4096: " + lr[4] + " Time: " + (sec - secs[2]) + "s" + " Amount " + tims[2]);
+              secs[2] = sec;
+              tims[2]++;
+              las[4].setText("Lastest 4096 Input: " + hash);
+                }
+          case 5 -> {
+              las[5].setText("Latest 65536: " + lr[5] + " Time: " + (sec - secs[3]) + "s" + " Amount " + tims[3]);
+              secs[3] = sec;
+              tims[3]++;
+              las[6].setText("Lastest 65536 Input: " + hash);
+              pr("1/65536 Sha256: " + hash);
+                }
+          case 6 -> {
+              las[7].setText("Latest 1048576: " + lr[6] + " Time: " + (sec - secs[4]) + "s" + " Amount " + tims[4]);
+              secs[4] = sec;
+              tims[4]++;
+              las[8].setText("Lastest 1048576 Input: " + hash);
+              pr("1/1048576 Sha256: " + hash);
+                }
+          case 7 -> {
+              las[9].setText("Latest 16777216: " + lr[7] + " Time: " + (sec - secs[5]) + "s" + " Amount " + tims[5]);
+              secs[5] = sec;
+              tims[5]++;
+              las[10].setText("Lastest 16777216 Input: " + hash);
+              pr("1/16777216 Sha256: " + hash);
+                }
+          default -> {
+                }
           }
           if (rar >= 8) {
             pr("Jackpot, 1/??? Sha256: " + hash);
@@ -223,6 +222,7 @@ public class Main extends JFrame {
       private void pr(String inp) {
         System.out.println(inp);
       }
+    @Override
       protected void done() {
         b.setEnabled(true);
       }
@@ -233,15 +233,15 @@ public class Main extends JFrame {
   public static int getRarity(String r) {
     int rarity = 0;
     String lz = "0";
-    for (int b = 1; b < r.length(); b++) {
-      if (r.substring(0, b).equals(lz)) {
+    for (int bk = 1; bk < r.length(); bk++) {
+      if (r.substring(0, bk).equals(lz)) {
         rarity++;
         lz = lz + "0";
       } else {
-        lr[b] = r.substring(0, b + 1);
+        lr[bk] = r.substring(0, bk + 1);
         break;
       }
-    };
+    }
     return rarity;
   }
 
@@ -258,7 +258,6 @@ public class Main extends JFrame {
         try {
           startLongProcess();
         } catch(Exception e1) {
-          e1.printStackTrace();
         }
       }
       if (e.getSource() == b2) {
